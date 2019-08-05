@@ -67,8 +67,13 @@ namespace EasySurvivalScripts {
             RotateCamera();
 
             zInput = Input.GetAxisRaw(leanInput);
-            float step = leanSpeed * Time.deltaTime;
-            transform.localEulerAngles = Vector3.MoveTowards(transform.localEulerAngles, new Vector3(0f, 0f, leanAngle * zInput), step);
+            if(zInput != 0 || transform.eulerAngles.z != 0) {
+                transform.eulerAngles = Vector3.MoveTowards(transform.eulerAngles, new Vector3(
+                    transform.eulerAngles.x,
+                    transform.eulerAngles.y,
+                    20 * zInput
+                ), leanSpeed * Time.deltaTime);
+            }
         }
 
         void RotateCamera() {
