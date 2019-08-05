@@ -34,6 +34,7 @@ namespace EasySurvivalScripts {
 
         Transform FPSController;
         float xClamp;
+        float zClamp;
         Vector3 camMoveLoc;
         Transform _fpsCameraHelper;
         Transform _tpsCameraHelper;
@@ -54,42 +55,23 @@ namespace EasySurvivalScripts {
             _fpsCameraHelper.localPosition = Vector3.zero;
         }
 
-
-        void Add_TPSCamPositionHelper() {
-            _tpsCameraHelper = new GameObject().transform;
-            _tpsCameraHelper.name = "_tpsCameraHelper";
-            _tpsCameraHelper.SetParent(FPSController);
-            _tpsCameraHelper.localPosition = Vector3.zero;
-        }
-
         // Update is called once per frame
         void Update() {
             RotateCamera();
-
-            zInput = Input.GetAxisRaw(leanInput);
-            if(zInput != 0 || transform.eulerAngles.z != 0) {
-                transform.eulerAngles = Vector3.MoveTowards(transform.eulerAngles, new Vector3(
-                    transform.eulerAngles.x,
-                    transform.eulerAngles.y,
-                    20 * zInput
-                ), leanSpeed * Time.deltaTime);
-            }
         }
 
         void RotateCamera() {
-            float step = leanSpeed * Time.deltaTime;
-
             float mouseX = Input.GetAxis(MouseXInput) * (mouseSensitivity * Time.deltaTime);
             float mouseY = Input.GetAxis(MouseYInput) * (mouseSensitivity * Time.deltaTime);
             Vector3 eulerRotation = transform.eulerAngles;
 
             xClamp += mouseY;
+            xClamp = Mathf.Clamp(xClamp, FPS_MinMaxAngles.x, FPS_MinMaxAngles.y);
 
-            if(cameraPerspective == CameraPerspective.FirstPerson) {
-                xClamp = Mathf.Clamp(xClamp, FPS_MinMaxAngles.x, FPS_MinMaxAngles.y);
-            } else {
-                xClamp = Mathf.Clamp(xClamp, TPS_MinMaxAngles.x, TPS_MinMaxAngles.y);
-            }
+            zInput = Input.GetAxisRaw(leanInput);
+            zClamp = Mathf.MoveTowardsAngle(transform.eulerAngles.z, leanAngle * zInput, leanSpeed * Time.deltaTime);
+
+            eulerRotation.z = zClamp;
 
             eulerRotation.x = -xClamp;
             transform.eulerAngles = eulerRotation;
@@ -106,10 +88,6 @@ namespace EasySurvivalScripts {
             if(_tpsCameraHelper) {
                 Gizmos.DrawWireSphere(_tpsCameraHelper.position, 0.1f);
             }
-        }
-
-        private void lean() {
-
         }
     }
 }

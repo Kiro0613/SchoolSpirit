@@ -4009,6 +4009,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerStates: 0
+  canMove: 0
   HorizontalInput: Horizontal
   VerticalInput: Vertical
   RunInput: Run
@@ -4041,8 +4042,9 @@ MonoBehaviour:
   TPS_MinMaxAngles: {x: -15, y: 25}
   leanInput: Lean
   zInput: 0
-  leanSpeed: 50
-  leanAngle: 10
+  leanSpeed: 45
+  leanAngle: 15
+  zClamp: 0
 --- !u!137 &137121037385374459
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
