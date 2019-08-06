@@ -30,11 +30,14 @@ namespace EasySurvivalScripts {
         public string leanInput = "Lean";
         public float zInput;
         public float leanSpeed;
-        public float leanAngle;
+        public float cameraLean;
+
+        [Header("Head Collision")]
+        public SphereCollider head;
 
         Transform FPSController;
         float xClamp;
-        float zClamp;
+        public float zClamp;
         Vector3 camMoveLoc;
         Transform _fpsCameraHelper;
         Transform _tpsCameraHelper;
@@ -43,6 +46,7 @@ namespace EasySurvivalScripts {
             Cursor.lockState = CursorLockMode.Locked;
             xClamp = 0;
             FPSController = GetComponentInParent<PlayerMovement>().transform;
+            head = GetComponent<SphereCollider>();
         }
 
         // Use this for initialization
@@ -69,10 +73,17 @@ namespace EasySurvivalScripts {
             xClamp = Mathf.Clamp(xClamp, FPS_MinMaxAngles.x, FPS_MinMaxAngles.y);
 
             zInput = Input.GetAxisRaw(leanInput);
-            zClamp = Mathf.MoveTowardsAngle(transform.eulerAngles.z, leanAngle * zInput, leanSpeed * Time.deltaTime);
+            zClamp = Mathf.MoveTowardsAngle(transform.eulerAngles.z, cameraLean * zInput, leanSpeed * Time.deltaTime);
+
+            Vector3 headOffset = Vector3.zero;
+            headOffset.x = Mathf.MoveTowards(transform.localPosition.x, -zClamp * 0.1f, leanSpeed * Time.deltaTime);
+            headOffset.y = Mathf.MoveTowards(transform.localPosition.y, (0.1f * -Mathf.Abs(zInput)) + 1, (leanSpeed / 64) * Time.deltaTime);
+            //headOffset.x = -zClamp * 0.1f;
+            //headOffset.y = (-0.5f * zInput) + 1;
+
+            transform.localPosition = Vector3.MoveTowards(transform.localPosition, headOffset, leanSpeed * Time.deltaTime);
 
             eulerRotation.z = zClamp;
-
             eulerRotation.x = -xClamp;
             transform.eulerAngles = eulerRotation;
             FPSController.Rotate(Vector3.up * mouseX);

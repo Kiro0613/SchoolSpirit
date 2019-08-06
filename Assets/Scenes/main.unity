@@ -893,7 +893,7 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1939549935}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 3
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_MotionVectors: 1
@@ -2491,6 +2491,7 @@ GameObject:
   - component: {fileID: 20469657962032513}
   - component: {fileID: 81721064188752279}
   - component: {fileID: 114641675428485371}
+  - component: {fileID: 1915570308900680}
   m_Layer: 8
   m_Name: Camera Controller
   m_TagString: MainCamera
@@ -2498,6 +2499,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!135 &1915570308900680
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1915570308900679}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1938774642357427
 GameObject:
   m_ObjectHideFlags: 0
@@ -4043,7 +4057,8 @@ MonoBehaviour:
   leanInput: Lean
   zInput: 0
   leanSpeed: 45
-  leanAngle: 15
+  cameraLean: 15
+  head: {fileID: 1915570308900680}
   zClamp: 0
 --- !u!137 &137121037385374459
 SkinnedMeshRenderer:
