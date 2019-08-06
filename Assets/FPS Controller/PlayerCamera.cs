@@ -30,6 +30,8 @@ namespace EasySurvivalScripts {
         public float duckAmount;
         public float moveSpeed;
         public bool canLean;
+        public float distToWall;
+        public float raycastLength;
 
         Vector3 headOffset;
 
@@ -42,8 +44,6 @@ namespace EasySurvivalScripts {
         Vector3 camMoveLoc;
         Transform _fpsCameraHelper;
 
-
-
         private void Awake() {
             Cursor.lockState = CursorLockMode.Locked;
             xClamp = 0;
@@ -53,8 +53,7 @@ namespace EasySurvivalScripts {
             head = GetComponent<SphereCollider>();
         }
 
-        // Use this for initialization
-        void Start() {
+        private void FixedUpdate() {
         }
 
         void Add_FPSCamPositionHelper() {
@@ -77,18 +76,28 @@ namespace EasySurvivalScripts {
             xClamp = Mathf.Clamp(xClamp, FPS_MinMaxAngles.x, FPS_MinMaxAngles.y);
 
             zInput = Input.GetAxisRaw(leanInput);
-            if(canLean == false || zInput == 0) {
-                headOffset.x = Mathf.MoveTowards(transform.localPosition.x, slideAmount * -zInput, slideAmount * 3 * Time.deltaTime);
-                headOffset.y = Mathf.MoveTowards(transform.localPosition.y, (duckAmount * -Mathf.Abs(zInput)) + 1, duckAmount * 3 * Time.deltaTime);
-                zClamp = Mathf.MoveTowardsAngle(transform.eulerAngles.z, leanAngle * zInput, leanAngle * 3 * Time.deltaTime);
+
+            if(zInput != 0) {
+                RaycastHit hit;
+                if(Physics.Raycast(transform.position, -transform.right, out hit, raycastLength) || Physics.Raycast(transform.position, transform.right, out hit, raycastLength)) {
+                    distToWall = hit.distance / raycastLength;
+                    Debug.Log(hit.distance);
+                } else {
+                    distToWall = 1;
+                }
             }
+            
+            headOffset.x = Mathf.MoveTowards(transform.localPosition.x, slideAmount * -zInput * distToWall, slideAmount * 3 * Time.deltaTime);
+            headOffset.y = Mathf.MoveTowards(transform.localPosition.y, (duckAmount * -Mathf.Abs(zInput) * distToWall) + 1, duckAmount * 3 * Time.deltaTime);
+            zClamp = Mathf.MoveTowardsAngle(transform.eulerAngles.z, leanAngle * zInput * distToWall, leanAngle * 3 * Time.deltaTime);
 
             transform.localPosition = Vector3.MoveTowards(transform.localPosition, headOffset, leanAngle * 3 * Time.deltaTime);
 
             eulerRotation.x = -xClamp;
             eulerRotation.z = zClamp;
             transform.eulerAngles = eulerRotation;
-            FPSController.localPosition = Vector3.MoveTowards(FPSController.localPosition, Vector3.right * headOffset.x, slideAmount * 3 * Time.deltaTime);
+            transform.localPosition = headOffset;
+            //FPSController.localPosition = Vector3.MoveTowards(FPSController.localPosition, new Vector3(headOffset.x, FPSController.localPosition.y, FPSController.localPosition.z), slideAmount * 3 * Time.deltaTime);
             FPSController.Rotate(Vector3.up * mouseX);
         }
 
@@ -101,17 +110,14 @@ namespace EasySurvivalScripts {
         }
 
         private void OnTriggerEnter(Collider other) {
-            if(other.name != "player") {
-                canLean = true;
-            }
-            Debug.Log("Entered");
-            Debug.Log(other.name);
+            //Debug.Log("Entered");
+            //Debug.Log(other.name);
         }
 
         private void OnTriggerExit(Collider other) {
             canLean = false;
-            Debug.Log("Exited");
-            Debug.Log(other.name);
+            //Debug.Log("Exited");
+            //Debug.Log(other.name);
         }
     }
 }
