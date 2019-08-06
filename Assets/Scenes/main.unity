@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.4465782, g: 0.49641252, b: 0.5748167, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -849,7 +849,6 @@ GameObject:
   - component: {fileID: 1939549936}
   - component: {fileID: 1939549939}
   - component: {fileID: 1939549938}
-  - component: {fileID: 1939549937}
   m_Layer: 8
   m_Name: Capsule
   m_TagString: Untagged
@@ -871,20 +870,6 @@ Transform:
   m_Father: {fileID: 4894539581602293}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &1939549937
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1939549935}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1939549938
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2492,6 +2477,7 @@ GameObject:
   - component: {fileID: 81721064188752279}
   - component: {fileID: 114641675428485371}
   - component: {fileID: 1915570308900680}
+  - component: {fileID: 1915570308900681}
   m_Layer: 8
   m_Name: Camera Controller
   m_TagString: MainCamera
@@ -2507,11 +2493,27 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1915570308900679}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.4
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &1915570308900681
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1915570308900679}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 1
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1938774642357427
 GameObject:
   m_ObjectHideFlags: 0
@@ -3965,7 +3967,7 @@ Camera:
     height: 1
   near clip plane: 0.01
   far clip plane: 1000
-  field of view: 60
+  field of view: 75
   orthographic: 0
   orthographic size: 5
   m_Depth: -10
@@ -4052,12 +4054,13 @@ MonoBehaviour:
   cameraPerspective: 0
   FPS_CameraOffset: {x: -0.1, y: 0.22, z: 0}
   FPS_MinMaxAngles: {x: -75, y: 60}
-  TPS_CameraOffset: {x: 0, y: 0.9, z: -1.27}
-  TPS_MinMaxAngles: {x: -15, y: 25}
   leanInput: Lean
   zInput: 0
-  leanSpeed: 45
-  cameraLean: 15
+  leanAngle: 15
+  slideAmount: 1.2
+  duckAmount: 0.09
+  moveSpeed: 2.5
+  canLean: 0
   head: {fileID: 1915570308900680}
   zClamp: 0
 --- !u!137 &137121037385374459
@@ -4349,10 +4352,10 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 2
+  m_Height: 1.5
   m_Radius: 0.35
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: -0.5, z: 0}
