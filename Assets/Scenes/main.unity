@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.4465782, g: 0.49641252, b: 0.5748167, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4328,12 +4328,15 @@ MonoBehaviour:
   leanInput: Lean
   zInput: 0
   leanAngle: 15
-  slideAmount: 1.2
+  slideAmount: 1
   duckAmount: 0.09
   moveSpeed: 2.5
   canLean: 0
   distToWall: 0
   raycastLength: 0.4
+  headOffsetX: 0
+  xOffsetAdjuster: 0
+  zOffsetAdjuster: 0
   head: {fileID: 1915570308900680}
   zClamp: 0
 --- !u!137 &137121037385374459
