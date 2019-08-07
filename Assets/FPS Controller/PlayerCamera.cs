@@ -80,16 +80,16 @@ namespace EasySurvivalScripts {
             if(zInput != 0) {
                 RaycastHit hit;
                 if(Physics.Raycast(transform.position, -transform.right, out hit, raycastLength) || Physics.Raycast(transform.position, transform.right, out hit, raycastLength)) {
-                    distToWall = hit.distance / raycastLength;
-                    Debug.Log(hit.distance);
+                    distToWall = Mathf.Ceil((hit.distance / raycastLength) * 10) / 10;
+                    Debug.Log(distToWall);
                 } else {
                     distToWall = 1;
                 }
             }
             
-            headOffset.x = Mathf.MoveTowards(transform.localPosition.x, slideAmount * -zInput * distToWall, slideAmount * 3 * Time.deltaTime);
-            headOffset.y = Mathf.MoveTowards(transform.localPosition.y, (duckAmount * -Mathf.Abs(zInput) * distToWall) + 1, duckAmount * 3 * Time.deltaTime);
-            zClamp = Mathf.MoveTowardsAngle(transform.eulerAngles.z, leanAngle * zInput * distToWall, leanAngle * 3 * Time.deltaTime);
+            headOffset.x = Mathf.Round(Mathf.MoveTowards(transform.localPosition.x, slideAmount * -zInput * distToWall, slideAmount * 3 * Time.deltaTime)*100)/100;
+            headOffset.y = Mathf.Round(Mathf.MoveTowards(transform.localPosition.y, (duckAmount * -Mathf.Abs(zInput) * distToWall) + 1, duckAmount * 3 * Time.deltaTime) * 100) / 100;
+            zClamp = Mathf.Round(Mathf.MoveTowardsAngle(transform.eulerAngles.z, leanAngle * zInput * distToWall, leanAngle * 3 * Time.deltaTime) * 100) / 100;
 
             transform.localPosition = Vector3.MoveTowards(transform.localPosition, headOffset, leanAngle * 3 * Time.deltaTime);
 
