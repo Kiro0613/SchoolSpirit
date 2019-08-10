@@ -98,9 +98,6 @@ namespace EasySurvivalScripts {
             headOffset.x = Mathf.MoveTowards(transform.localPosition.x, slideAmountClamp, slideAmount * 3 * Time.deltaTime);
             headOffset.y = Mathf.MoveTowards(transform.localPosition.y, (duckAmountClamp * -Mathf.Abs(zInput)) + 1, duckAmount * 3 * Time.deltaTime);
             zClamp = Mathf.MoveTowardsAngle(transform.eulerAngles.z, leanAngleClamp, leanAngle * 3 * Time.deltaTime);
-            //headOffsetX = Mathf.Clamp(headOffset.x, -slideAmount + (distToWall * slideAmount * Mathf.Abs(zInput)), slideAmount - (distToWall * slideAmount * Mathf.Abs(zInput) * 10));
-            //zClamp = Mathf.Clamp(zClamp, -leanAngle + (distToWall / raycastLength) * leanAngle, leanAngle - (distToWall / raycastLength) * leanAngle);
-            //headOffsetX = -slideAmount + (distToWall * slideAmount * Mathf.Abs(zInput));
 
             transform.localPosition = Vector3.MoveTowards(transform.localPosition, headOffset, leanAngle * 3 * Time.deltaTime);
 
@@ -108,7 +105,6 @@ namespace EasySurvivalScripts {
             eulerRotation.z = zClamp;
             transform.eulerAngles = eulerRotation;
             transform.localPosition = headOffset;
-            //FPSController.localPosition = Vector3.MoveTowards(FPSController.localPosition, new Vector3(headOffset.x, FPSController.localPosition.y, FPSController.localPosition.z), slideAmount * 3 * Time.deltaTime);
             FPSController.Rotate(Vector3.up * mouseX);
         }
 
