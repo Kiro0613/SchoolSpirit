@@ -76,10 +76,13 @@ namespace EasySurvivalScripts {
             Vector3 fwdMovement = characterController.isGrounded == true ? transform.forward * vInput : Vector3.zero;
             Vector3 rightMovement = characterController.isGrounded == true ? transform.right * hInput : Vector3.zero;
 
-            if(playerCamera.headInsideWall) {
-               characterController.SimpleMove(transform.right * playerCamera.zInput * 8);
-                Debug.Log("setjgsugjrs");
-            }
+            //if(playerCamera.headInsideWall) {
+            //   characterController.SimpleMove(transform.right * playerCamera.zInput * 8);
+            //    Debug.Log("setjgsugjrs");
+            //}
+
+            
+            //Debug.Log(transform.position * 1.431f);
 
             float _speed = Input.GetButton(RunInput) ? runSpeed : walkSpeed;
                 characterController.SimpleMove(Vector3.ClampMagnitude(fwdMovement + rightMovement, 1f) * _speed);

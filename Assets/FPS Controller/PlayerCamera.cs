@@ -28,8 +28,8 @@ namespace EasySurvivalScripts {
         public float leanAngle;
         public float slideAmount;
         public float duckAmount;
-        public float distToWall;
-        public float raycastLength;
+        public float distToWallL;
+        public float distToWallR;
         //public float xOffsetAdjuster;
         //public float zOffsetAdjuster;
         public bool headInsideWall;
@@ -78,22 +78,26 @@ namespace EasySurvivalScripts {
 
             zInput = Input.GetAxisRaw(leanInput);
 
-            if(zInput != 0) {
-                RaycastHit hit;
-                if(Physics.Raycast(transform.position, -transform.right, out hit, raycastLength) || Physics.Raycast(transform.position, transform.right, out hit, raycastLength)) {
-                    distToWall = Mathf.Ceil((hit.distance / raycastLength) * 100) / 100;
-                    //xOffsetAdjuster = slideAmount
-                    //Debug.Log(distToWall);
-                } else {
-                    distToWall = 1;
-                }
+            RaycastHit hit;
+            if(zInput == 1 && Physics.Raycast(FPSController.position, -transform.right, out hit, slideAmount)) {
+                distToWallL = Mathf.Round((hit.distance - 0.43f) / 0.57f * 1000) / 1000;
+            } else {
+                distToWallL = 1;
             }
-            
-            if(distToWall > raycastLength || zInput == 0) {
-                headOffset.x = Mathf.Round(Mathf.MoveTowards(transform.localPosition.x, slideAmount * -zInput * distToWall, slideAmount * 3 * Time.deltaTime) * 100) / 100;
-                headOffset.y = Mathf.Round(Mathf.MoveTowards(transform.localPosition.y, (duckAmount * -Mathf.Abs(zInput) * distToWall) + 1, duckAmount * 3 * Time.deltaTime) * 100) / 100;
-                zClamp = Mathf.Round(Mathf.MoveTowardsAngle(transform.eulerAngles.z, leanAngle * zInput * distToWall, leanAngle * 3 * Time.deltaTime) * 100) / 100;
+
+            if(zInput == -1 && Physics.Raycast(FPSController.position, transform.right, out hit, slideAmount)) {
+                distToWallR = Mathf.Round((hit.distance - 0.43f) / 0.57f * 1000) / 1000;
+            } else {
+                distToWallR = 1;
             }
+
+            float slideAmountClamp = Mathf.Clamp(slideAmount * -zInput, -slideAmount * distToWallL, slideAmount * distToWallR);
+            float duckAmountClamp = distToWallL < distToWallR ? duckAmount * distToWallL : duckAmount * distToWallR;
+            float leanAngleClamp = Mathf.Clamp(leanAngle * zInput, -leanAngle * distToWallR, leanAngle * distToWallL);
+
+            headOffset.x = Mathf.MoveTowards(transform.localPosition.x, slideAmountClamp, slideAmount * 3 * Time.deltaTime);
+            headOffset.y = Mathf.MoveTowards(transform.localPosition.y, (duckAmountClamp * -Mathf.Abs(zInput)) + 1, duckAmount * 3 * Time.deltaTime);
+            zClamp = Mathf.MoveTowardsAngle(transform.eulerAngles.z, leanAngleClamp, leanAngle * 3 * Time.deltaTime);
             //headOffsetX = Mathf.Clamp(headOffset.x, -slideAmount + (distToWall * slideAmount * Mathf.Abs(zInput)), slideAmount - (distToWall * slideAmount * Mathf.Abs(zInput) * 10));
             //zClamp = Mathf.Clamp(zClamp, -leanAngle + (distToWall / raycastLength) * leanAngle, leanAngle - (distToWall / raycastLength) * leanAngle);
             //headOffsetX = -slideAmount + (distToWall * slideAmount * Mathf.Abs(zInput));
