@@ -57,7 +57,6 @@ namespace EasySurvivalScripts {
         void Update() {
             //handle controller
             HandlePlayerControls();
-            Debug.Log(playerCamera.zClamp);
         }
 
         private void FixedUpdate() {
@@ -77,8 +76,8 @@ namespace EasySurvivalScripts {
             Vector3 fwdMovement = characterController.isGrounded == true ? transform.forward * vInput : Vector3.zero;
             Vector3 rightMovement = characterController.isGrounded == true ? transform.right * hInput : Vector3.zero;
 
-            if(playerCamera.distToWall < 1) {
-                rightMovement.x += (playerCamera.zInput*2);
+            if(playerCamera.headInsideWall) {
+                transform.right *= playerCamera.zInput * 0.2f;
             }
 
             float _speed = Input.GetButton(RunInput) ? runSpeed : walkSpeed;

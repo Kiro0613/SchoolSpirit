@@ -4297,13 +4297,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerStates: 0
   canMove: 0
+  playerCamera: {fileID: 0}
   HorizontalInput: Horizontal
   VerticalInput: Vertical
   RunInput: Run
   JumpInput: Jump
   walkSpeed: 2.5
   runSpeed: 6
-  JumpForce: 8
+  JumpForce: 3.5
   footstepSound: {fileID: 8300000, guid: 42e65e088b3f4374e851b8dbd38f3df9, type: 3}
   landingSound: {fileID: 8300000, guid: 3b09d59f4499d45428baa7a21e954296, type: 3}
   nextStepIncrement: 0
@@ -4330,13 +4331,9 @@ MonoBehaviour:
   leanAngle: 15
   slideAmount: 1
   duckAmount: 0.09
-  moveSpeed: 2.5
-  canLean: 0
   distToWall: 0
   raycastLength: 0.4
-  headOffsetX: 0
-  xOffsetAdjuster: 0
-  zOffsetAdjuster: 0
+  headInsideWall: 0
   head: {fileID: 1915570308900680}
   zClamp: 0
 --- !u!137 &137121037385374459

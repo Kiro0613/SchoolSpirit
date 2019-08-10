@@ -28,13 +28,11 @@ namespace EasySurvivalScripts {
         public float leanAngle;
         public float slideAmount;
         public float duckAmount;
-        public float moveSpeed;
-        public bool canLean;
         public float distToWall;
         public float raycastLength;
-        public float headOffsetX;
-        public float xOffsetAdjuster;
-        public float zOffsetAdjuster;
+        //public float xOffsetAdjuster;
+        //public float zOffsetAdjuster;
+        public bool headInsideWall;
 
         Vector3 headOffset;
 
@@ -50,13 +48,13 @@ namespace EasySurvivalScripts {
         private void Awake() {
             Cursor.lockState = CursorLockMode.Locked;
             xClamp = 0;
-            canLean = false;
             headOffset = Vector3.zero;
             FPSController = GetComponentInParent<PlayerMovement>().transform;
             head = GetComponent<SphereCollider>();
         }
 
         private void FixedUpdate() {
+
         }
 
         void Add_FPSCamPositionHelper() {
@@ -68,7 +66,6 @@ namespace EasySurvivalScripts {
         // Update is called once per frame
         void Update() {
             RotateCamera();
-            //headOffsetX = headOffset.x;
         }
 
         void RotateCamera() {
@@ -120,12 +117,13 @@ namespace EasySurvivalScripts {
         }
 
         private void OnTriggerEnter(Collider other) {
+            headInsideWall = true;
             //Debug.Log("Entered");
             //Debug.Log(other.name);
         }
 
         private void OnTriggerExit(Collider other) {
-            canLean = false;
+            headInsideWall = false;
             //Debug.Log("Exited");
             //Debug.Log(other.name);
         }
