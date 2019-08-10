@@ -77,7 +77,8 @@ namespace EasySurvivalScripts {
             Vector3 rightMovement = characterController.isGrounded == true ? transform.right * hInput : Vector3.zero;
 
             if(playerCamera.headInsideWall) {
-                transform.right *= playerCamera.zInput * 0.2f;
+               characterController.SimpleMove(transform.right * playerCamera.zInput * 8);
+                Debug.Log("setjgsugjrs");
             }
 
             float _speed = Input.GetButton(RunInput) ? runSpeed : walkSpeed;
