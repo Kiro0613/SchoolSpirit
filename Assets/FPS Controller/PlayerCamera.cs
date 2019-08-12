@@ -30,9 +30,6 @@ namespace EasySurvivalScripts {
         public float duckAmount;
         public float distToWallL;
         public float distToWallR;
-        //public float xOffsetAdjuster;
-        //public float zOffsetAdjuster;
-        public bool headInsideWall;
 
         Vector3 headOffset;
 
@@ -114,18 +111,6 @@ namespace EasySurvivalScripts {
             }
 
             Gizmos.color = Color.green;
-        }
-
-        private void OnTriggerEnter(Collider other) {
-            headInsideWall = true;
-            //Debug.Log("Entered");
-            //Debug.Log(other.name);
-        }
-
-        private void OnTriggerExit(Collider other) {
-            headInsideWall = false;
-            //Debug.Log("Exited");
-            //Debug.Log(other.name);
         }
     }
 }
