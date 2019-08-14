@@ -32,9 +32,9 @@ namespace EasySurvivalScripts {
         [Header("Audio")]
         public AudioClip footstepSound;
         public AudioClip landingSound;
-        private AudioSource audioSource;
+        public Transform soundNode;
         private int stepCycle;
-        private int stepCycleSize;
+        public int stepCycleSize;
         private bool incrementStepCycle;
         private int nextStep;
         public int nextStepIncrement;
@@ -45,8 +45,6 @@ namespace EasySurvivalScripts {
         // Use this for initialization
         void Start() {
             characterController = GetComponent<CharacterController>();
-            audioSource = GetComponent<AudioSource>();
-            nextStepIncrement = 60;
         }
 
         // Update is called once per frame
@@ -59,7 +57,8 @@ namespace EasySurvivalScripts {
             if(incrementStepCycle) {
                 stepCycle += stepCycleSize;
                 if(stepCycle >= nextStep) {
-                    playSound(footstepSound);
+                    //playSound(footstepSound);
+                    Instantiate(soundNode, transform.position, transform.rotation, null);
                     nextStep += nextStepIncrement;
                 }
             }
@@ -82,7 +81,7 @@ namespace EasySurvivalScripts {
             //Managing Player States
             if(characterController.isGrounded) {
                 if(didJump) {
-                    playSound(landingSound);
+                    Instantiate(soundNode, null);
                     didJump = false;
                 }
 
@@ -132,10 +131,10 @@ namespace EasySurvivalScripts {
             while(!characterController.isGrounded);
         }
 
-        private void playSound(AudioClip sound) {
-            audioSource.clip = sound;
-            audioSource.Play();
-        }
+        //private void playSound(AudioClip sound) {
+        //    audioSource.clip = sound;
+        //    audioSource.Play();
+        //}
 
     }
 }
