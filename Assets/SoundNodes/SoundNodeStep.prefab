@@ -57,7 +57,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1719063195, guid: e5de34308b5e92a42a1d0b7cfd19a0fa, type: 3}
       propertyPath: radius
-      value: 15
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 1719063195, guid: e5de34308b5e92a42a1d0b7cfd19a0fa, type: 3}
       propertyPath: timer

@@ -10,82 +10,142 @@ public enum EnemyStates {
 }
 
 public class Enemy : MonoBehaviour {
-    public EnemyStates enemyState;
+    public GameObject player;
+
+    public EnemyStates state;
     private EnemyStates lastState;  //State enemy had on previous call
     AIConeDetection visCone;
-    public GameObject indicator;   //Changes color to tell how enemy feels
+    public GameObject indicator;
+    MeshRenderer indicatorColor;   //Changes color to tell how enemy feels
+    Vector3 targetPos;
+    Quaternion targetRot;
+    Vector3 originPos;
+    Quaternion originRot;
 
-    public float searchTimeout; //Enemy stops searching for player when runs out
+    public float stateTimeout;
+    
     public float moveSpeed;
     public float lookSpeed;
 
-    private GameObject player;
-
-
+    [Header("Hearing Distance")]
+    public float alertThreshold;
+    public float searchThreshold;
+    
     // Start is called before the first frame update
     void Start()
     {
         visCone = GetComponent<AIConeDetection>();
-        //indicator = GetComponentInChildren<SphereCollider>().gameObject;
-        enemyState = EnemyStates.Patrolling;
-        player = FindObjectOfType<EasySurvivalScripts.PlayerMovement>().gameObject;
+        indicatorColor = indicator.GetComponent<MeshRenderer>();
+        state = EnemyStates.Patrolling;
+        player = GameObject.FindGameObjectWithTag("Player");
+        originPos = transform.position;
+        originRot = transform.rotation;
     }
 
     // Update is called once per frame
     void Update() {
-        if(lastState != enemyState) {
-            updateState();
-        }
+        //transform.rotation = Quaternion.RotateTowards(transform.rotation, player.transform.rotation, Time.deltaTime * lookSpeed);
 
-        if(enemyState == EnemyStates.Chasing) {
-            indicator.GetComponent<MeshRenderer>().material.color = Color.red;
-            transform.position = Vector3.MoveTowards(transform.position, player.transform.position, Time.deltaTime * moveSpeed);
-            transform.LookAt(player.transform.position);
-        } else if(enemyState == EnemyStates.Suspicious) {
-            indicator.GetComponent<MeshRenderer>().material.color = Color.blue;
-        } else if(enemyState == EnemyStates.Searching) {
-            indicator.GetComponent<MeshRenderer>().material.color = Color.yellow;
+        if(state == EnemyStates.Chasing) {
+            Chase();
+        } else if(state == EnemyStates.Suspicious) {
+            LookAround();
+        } else if(state == EnemyStates.Searching) {
+            Search();
         } else {
-            indicator.GetComponent<MeshRenderer>().material.color = Color.green;
-        }
-
-        if(enemyState != EnemyStates.Patrolling) {
-            timeoutSearch();
+            Patrol();
         }
     }
 
-    //Mostly deals with the indicator color
-    void updateState() {
-        lastState = enemyState;
-    }
-
-    void look() {
-        if(visCone.GameObjectIntoCone.Contains(player)) {
-            alert(EnemyStates.Chasing);
+    private void FixedUpdate() {
+        if(stateTimeout > 0) {
+            stateTimeout -= Time.deltaTime;
         }
     }
 
-    void timeoutSearch() {
-        searchTimeout -= Time.deltaTime;
-        if(searchTimeout <= 0) {
-            enemyState = EnemyStates.Patrolling;
+    //Main state functions
+    private void Patrol() {
+        indicatorColor.material.color = Color.green;
+    }
+
+    float suspicionTimeout;
+    private void LookAround() {
+        indicatorColor.material.color = Color.blue;
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, Time.deltaTime * lookSpeed);
+
+        if(timedOut()) {
+            state = EnemyStates.Patrolling;
+            targetHome();
         }
     }
 
-    public void hearSound(float volume, Vector3 location) {
-        if(volume > 0.6) {
-            enemyState = EnemyStates.Chasing;
-            searchTimeout = 6f;
-        } else if(volume > 0.3) {
-            enemyState = EnemyStates.Suspicious;
-            searchTimeout = 6f;
+    float searchTimeout;
+    private void Search() {
+        indicatorColor.material.color = Color.yellow;
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, Time.deltaTime * lookSpeed);
 
-            transform.LookAt(location);
+        if(timedOut()) {
+            state = EnemyStates.Patrolling;
+            targetHome();
         }
     }
 
-    public void alert(EnemyStates state) {
-        //Debug.Log(GetInstanceID() + " heard you! Volume: " + volume);
+    float movementTimeout;
+    private void Chase() {
+        indicatorColor.material.color = Color.red;
+
+        if(canSeePlayer()) {
+            stateTimeout = 5;
+            targetPlayer();
+        }
         
+        transform.position = Vector3.MoveTowards(transform.position, player.transform.position, Time.deltaTime * moveSpeed);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, Time.deltaTime * lookSpeed);
+
+        if(timedOut()) {
+            state = EnemyStates.Searching;
+            stateTimeout = 8f;
+        }
+    }
+    
+    //State management functions
+    public void hearSound(float volume, Vector3 location) {
+        Debug.Log(volume);
+        if(volume > alertThreshold) {
+            state = EnemyStates.Chasing;
+            targetPlayer();
+        } else if(volume > searchThreshold) {
+            state = EnemyStates.Suspicious;
+            targetRot = TargetRotation(location - transform.position);
+        }
+    }
+
+    //Shorthands
+    bool isNewState() {
+        return lastState == state;
+    }
+
+    bool canSeePlayer() {
+        return visCone.GameObjectIntoCone.Contains(player);
+    }
+    
+    void targetPlayer() {
+        targetPos = player.transform.position;
+        Vector3 targetRotation = player.transform.position - transform.position;
+        targetRotation.y = 0.0f;
+        targetRot = Quaternion.LookRotation(targetRotation);
+    }
+
+    void targetHome() {
+        targetPos = originPos;
+        targetRot = originRot;
+    }
+
+    Quaternion TargetRotation(Vector3 direction) {
+        return Quaternion.LookRotation(direction);
+    }
+
+    bool timedOut() {
+        return stateTimeout <= 0;
     }
 }
