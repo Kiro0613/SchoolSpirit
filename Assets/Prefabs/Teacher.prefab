@@ -207,9 +207,9 @@ MonoBehaviour:
   indicator: {fileID: 5285490363023477442}
   stateTimeout: 0
   moveSpeed: 4
-  lookSpeed: 150
-  alertThreshold: 6
-  searchThreshold: 18
+  lookSpeed: 90
+  alertThreshold: 55
+  searchThreshold: 40
 --- !u!114 &6891491808191973803
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -224,15 +224,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   coneOrigin: {x: 0, y: 0, z: 0}
   coneHeight: 0
-  m_fConeLength: 8
-  m_fAngleOfView: 30
+  m_fConeLength: 12
+  m_fAngleOfView: 18
   m_vStartDistanceCone: 0.9
   m_matVisibilityCone: {fileID: 2100000, guid: 1a169106dff7ab443961feb7b22e240e, type: 2}
   m_bHasStartDistance: 0
   m_MaskLayerToIgnore:
     serializedVersion: 2
     m_Bits: 768
-  m_bShowCone: 1
+  m_bShowCone: 0
   m_iConeVisibilityPrecision: 60
 --- !u!1 &6891491808293202019
 GameObject:

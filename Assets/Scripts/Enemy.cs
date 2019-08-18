@@ -55,6 +55,17 @@ public class Enemy : MonoBehaviour {
         } else {
             Patrol();
         }
+
+        if(canSeePlayer()) {
+            state = EnemyStates.Chasing;
+            stateTimeout = 5;
+            targetPlayer();
+            visCone.m_fConeLength = 20;
+        } else {
+            visCone.m_fConeLength = 12;
+        }
+
+        //Debug.Log(visCone.GameObjectIntoCone.Contains(player));
     }
 
     private void FixedUpdate() {
@@ -82,6 +93,7 @@ public class Enemy : MonoBehaviour {
     float searchTimeout;
     private void Search() {
         indicatorColor.material.color = Color.yellow;
+        transform.position = Vector3.MoveTowards(transform.position, targetPos, Time.deltaTime * moveSpeed);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, Time.deltaTime * lookSpeed);
 
         if(timedOut()) {
@@ -93,11 +105,6 @@ public class Enemy : MonoBehaviour {
     float movementTimeout;
     private void Chase() {
         indicatorColor.material.color = Color.red;
-
-        if(canSeePlayer()) {
-            stateTimeout = 5;
-            targetPlayer();
-        }
         
         transform.position = Vector3.MoveTowards(transform.position, player.transform.position, Time.deltaTime * moveSpeed);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, Time.deltaTime * lookSpeed);
@@ -110,13 +117,19 @@ public class Enemy : MonoBehaviour {
     
     //State management functions
     public void hearSound(float volume, Vector3 location) {
-        Debug.Log(volume);
+        //Debug.Log(volume);
         if(volume > alertThreshold) {
             state = EnemyStates.Chasing;
+            stateTimeout = 5f;
             targetPlayer();
+            //Debug.Log("Heard you!!!");
         } else if(volume > searchThreshold) {
             state = EnemyStates.Suspicious;
+            stateTimeout = 8f;
             targetRot = TargetRotation(location - transform.position);
+            //Debug.Log("Heard something..?");
+        } else {
+            //Debug.Log("Barely heard a thing.");
         }
     }
 
@@ -132,7 +145,7 @@ public class Enemy : MonoBehaviour {
     void targetPlayer() {
         targetPos = player.transform.position;
         Vector3 targetRotation = player.transform.position - transform.position;
-        targetRotation.y = 0.0f;
+        //targetRotation.y = 0.0f;
         targetRot = Quaternion.LookRotation(targetRotation);
     }
 
