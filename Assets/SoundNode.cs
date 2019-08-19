@@ -31,11 +31,7 @@ public class SoundNode : MonoBehaviour {
 
     private void getEnemiesInRange() {
         //LayerMask enemyMask = 1 << 9;
-        Collider[] objectsInRange = Physics.OverlapSphere(transform.position, radius, 1 << 9);
-        foreach(Collider enemy in objectsInRange) {
-            enemy.gameObject.GetComponent<Enemy>().hearSound(radius - (Vector3.Distance(transform.position, enemy.transform.position)), transform.position);
-            Debug.Log("Radius - " + radius + "\nDistance - " + Vector3.Distance(transform.position, enemy.transform.position) + "  |  Volume - " + (radius - Vector3.Distance(transform.position, enemy.transform.position)));
-        }
+        
         //
         //Debug.Log(objectsInRange.Length);
     }

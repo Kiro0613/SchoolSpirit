@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace EasySurvivalScripts {
+namespace PlayerScripts {
     public enum PlayerStates {
         Idle,
         Walking,
@@ -20,6 +20,13 @@ namespace EasySurvivalScripts {
         public string VerticalInput = "Vertical";
         public string RunInput = "Run";
         public string JumpInput = "Jump";
+        public string CrouchInput = "Crouch";
+        public float crouchSpeed;
+        public GameObject inv;
+        
+        public float standingHeight;
+        public float crouchingHeight;
+        float targetHeight;
 
         [Header("Player Motor")]
         [Range(1f, 15f)]
@@ -31,7 +38,9 @@ namespace EasySurvivalScripts {
 
         [Header("Audio")]
         public AudioClip footstepSound;
+        public float footstepSoundRadius;
         public AudioClip landingSound;
+        public float landingSoundRadius;
         public Transform soundNode;
         private int stepCycle;
         public int stepCycleSize;
@@ -39,12 +48,14 @@ namespace EasySurvivalScripts {
         private int nextStep;
         public int nextStepIncrement;
         private bool didJump;
+        private PlaySound playSound;
 
         CharacterController characterController;
 
         // Use this for initialization
         void Start() {
             characterController = GetComponent<CharacterController>();
+            playSound = GetComponent<PlaySound>();
         }
 
         // Update is called once per frame
@@ -58,7 +69,7 @@ namespace EasySurvivalScripts {
                 stepCycle += stepCycleSize;
                 if(stepCycle >= nextStep) {
                     //playSound(footstepSound);
-                    Instantiate(soundNode, transform.position, transform.rotation, null);
+                    GetComponent<PlaySound>().play(footstepSound, footstepSoundRadius);
                     nextStep += nextStepIncrement;
                 }
             }
@@ -67,6 +78,10 @@ namespace EasySurvivalScripts {
         void HandlePlayerControls() {
             float hInput = Input.GetAxisRaw(HorizontalInput);
             float vInput = Input.GetAxisRaw(VerticalInput);
+            bool isCrouching = Input.GetAxis(CrouchInput) == 1;
+
+            targetHeight = isCrouching ? crouchingHeight : standingHeight;
+            transform.localScale = Vector3.MoveTowards(transform.localScale, new Vector3(1, targetHeight, 1), Time.deltaTime * crouchSpeed);
 
             Vector3 fwdMovement = characterController.isGrounded == true ? transform.forward * vInput : Vector3.zero;
             Vector3 rightMovement = characterController.isGrounded == true ? transform.right * hInput : Vector3.zero;
@@ -81,7 +96,7 @@ namespace EasySurvivalScripts {
             //Managing Player States
             if(characterController.isGrounded) {
                 if(didJump) {
-                    Instantiate(soundNode, null);
+                    GetComponent<PlaySound>().play(landingSound, landingSoundRadius);
                     didJump = false;
                 }
 
@@ -130,11 +145,5 @@ namespace EasySurvivalScripts {
             }
             while(!characterController.isGrounded);
         }
-
-        //private void playSound(AudioClip sound) {
-        //    audioSource.clip = sound;
-        //    audioSource.Play();
-        //}
-
     }
 }

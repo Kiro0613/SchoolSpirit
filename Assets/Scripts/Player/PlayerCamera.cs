@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace EasySurvivalScripts {
+namespace PlayerScripts {
     public enum CameraPerspective {
         FirstPerson,
         ThirdPerson
@@ -39,7 +39,6 @@ namespace EasySurvivalScripts {
         Transform FPSController;
         float xClamp;
         public float zClamp;
-        Vector3 camMoveLoc;
         Transform _fpsCameraHelper;
 
         private void Awake() {
@@ -50,18 +49,16 @@ namespace EasySurvivalScripts {
             head = GetComponent<SphereCollider>();
         }
 
-        private void FixedUpdate() {
-
-        }
-
         void Add_FPSCamPositionHelper() {
             _fpsCameraHelper = new GameObject().transform;
             _fpsCameraHelper.name = "_fpsCameraHelper";
             _fpsCameraHelper.localPosition = Vector3.zero;
         }
 
+        public Vector3 invDropSpot;
         // Update is called once per frame
         void Update() {
+            invDropSpot = transform.forward*2 + GetComponentInParent<Transform>().position;
             RotateCamera();
         }
 

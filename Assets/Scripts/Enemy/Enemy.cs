@@ -28,7 +28,9 @@ public class Enemy : MonoBehaviour {
     public float lookSpeed;
 
     [Header("Hearing Distance")]
+    [Range(0f, 10f)]
     public float alertThreshold;
+    [Range(0f, 10f)]
     public float searchThreshold;
     
     // Start is called before the first frame update
@@ -116,17 +118,18 @@ public class Enemy : MonoBehaviour {
     }
     
     //State management functions
-    public void hearSound(float volume, Vector3 location) {
-        //Debug.Log(volume);
-        if(volume > alertThreshold) {
+    public void hearSound(GameObject soundSource) {
+        PlaySound soundInfo = soundSource.GetComponent<PlaySound>();
+
+        if(soundInfo.volume > alertThreshold) {
             state = EnemyStates.Chasing;
             stateTimeout = 5f;
             targetPlayer();
             //Debug.Log("Heard you!!!");
-        } else if(volume > searchThreshold) {
+        } else if(soundInfo.volume > searchThreshold) {
             state = EnemyStates.Suspicious;
             stateTimeout = 8f;
-            targetRot = TargetRotation(location - transform.position);
+            targetRot = TargetRotation(soundSource.transform.position - transform.position);
             //Debug.Log("Heard something..?");
         } else {
             //Debug.Log("Barely heard a thing.");
