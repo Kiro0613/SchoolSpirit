@@ -18,7 +18,7 @@ namespace UsableObjects {
         // Update is called once per frame
         void Update() {
             if(Input.GetKeyDown(KeyCode.P)) {
-                Debug.Log("Obj Pos: " + (transform.position));
+                //Debug.Log("Obj Pos: " + (transform.position));
             }
         }
 

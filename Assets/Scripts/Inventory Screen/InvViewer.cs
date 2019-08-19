@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//This script handles the spinny animation
 public class InvViewer : MonoBehaviour {
     Transform[] items;
     public float spinSpeed;
