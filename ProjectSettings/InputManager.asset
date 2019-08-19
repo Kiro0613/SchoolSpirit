@@ -44,7 +44,7 @@ InputManager:
     negativeButton: 
     positiveButton: mouse 0
     altNegativeButton: 
-    altPositiveButton: 
+    altPositiveButton: enter
     gravity: 1000
     dead: 0.001
     sensitivity: 1000
@@ -74,7 +74,7 @@ InputManager:
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: left shift
+    positiveButton: 
     altNegativeButton: 
     altPositiveButton: mouse 2
     gravity: 1000
@@ -137,8 +137,8 @@ InputManager:
     m_Name: Item Select
     descriptiveName: 
     descriptiveNegativeName: 
-    negativeButton: 
-    positiveButton: 
+    negativeButton: a
+    positiveButton: d
     altNegativeButton: 
     altPositiveButton: 
     gravity: 0
@@ -231,7 +231,7 @@ InputManager:
     joyNum: 0
   - serializedVersion: 3
     m_Name: Inv
-    descriptiveName: 
+    descriptiveName: Open Inventory
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: i

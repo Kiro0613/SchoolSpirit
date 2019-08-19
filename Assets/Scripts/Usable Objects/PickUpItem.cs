@@ -23,11 +23,7 @@ namespace UsableObjects {
         }
 
         public void Use(GameObject caller) {
-            PlayerInv Daddy = caller.GetComponentInChildren<PlayerInv>();
-            Daddy.inv.Add(gameObject);
-            gameObject.transform.SetParent(Daddy.invViewer.transform);
-            transform.localPosition = new Vector3(0, 0, 0);
-            gameObject.SetActive(false);
+            
         }
     }
 }

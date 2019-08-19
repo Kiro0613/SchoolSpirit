@@ -10,11 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 5120601321846239263}
   - component: {fileID: 2537769546799703955}
-  - component: {fileID: 5819370561782319803}
   - component: {fileID: 215547679616860543}
   m_Layer: 10
   m_Name: Homework
-  m_TagString: Untagged
+  m_TagString: Pickup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -49,21 +48,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.1, y: 1.15, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5819370561782319803
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3349077466908150448}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b186dbbe254711a4380b5a994c79685b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  locked: 0
-  isHeld: 0
-  holder: {fileID: 0}
 --- !u!54 &215547679616860543
 Rigidbody:
   m_ObjectHideFlags: 0
