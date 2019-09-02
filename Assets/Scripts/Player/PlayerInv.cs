@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace PlayerScripts {
     public class PlayerInv : MonoBehaviour {
@@ -51,6 +52,7 @@ namespace PlayerScripts {
                     heldItem = Mathf.Clamp(heldItem, 0, inv.Count - 1);
                     Debug.Log(heldItem);
                     target.x = -itemSpacing * heldItem;
+                    invHud.GetComponentInChildren<Text>().text = inv[heldItem].name;
                 }
             }
 
@@ -91,6 +93,7 @@ namespace PlayerScripts {
             invOpen = true;             //Mark inv as OPEN
             invHud.SetActive(true);     //Make inv visible in HUD
             invHud.transform.localScale = Vector3.one;
+            invHud.GetComponentInChildren<Text>().text = inv[heldItem].name;
 
             heldItem = heldItem >= inv.Count ? inv.Count - 1 : heldItem;
 

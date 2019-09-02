@@ -3,13 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace PlayerScripts {
-    public enum PlayerStates {
-        Idle,
-        Walking,
-        Running,
-        Jumping
-    }
-
     public class PlayerMovement : MonoBehaviour {
         public PlayerStates playerStates;
 
