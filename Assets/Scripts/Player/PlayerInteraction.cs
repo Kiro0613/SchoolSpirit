@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace PlayerScripts {
-    public class PlayerInteraction : MonoBehaviour {
+namespace Player {
+    public class Use : MonoBehaviour {
         public float lookDistance;
-        public PlayerCamera playerCamera;
+        public Cam playerCamera;
         bool holdingObject;
         GameObject objectHit;
-        PlayerInv playerInv;
+        Inv playerInv;
 
         // Start is called before the first frame update
         void Start() {
-            playerCamera = GetComponentInChildren<PlayerCamera>();
-            playerInv = GetComponentInChildren<PlayerInv>();
+            playerCamera = GetComponentInChildren<Cam>();
+            playerInv = GetComponentInChildren<Inv>();
         }
 
         // Update is called once per frame
@@ -23,7 +23,7 @@ namespace PlayerScripts {
                     playerInv.dropItem();
                 } else if(Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out RaycastHit hit, lookDistance, 1 << 10)) {
                     if(hit.transform.CompareTag("Pickup")) {
-                        PlayerInv Daddy = GetComponentInChildren<PlayerInv>();
+                        Inv Daddy = GetComponentInChildren<Inv>();
                         Daddy.inv.Add(hit.transform.gameObject);
                         hit.transform.SetParent(Daddy.invViewer.transform);
                         hit.transform.localPosition = new Vector3(0, 0, 0);

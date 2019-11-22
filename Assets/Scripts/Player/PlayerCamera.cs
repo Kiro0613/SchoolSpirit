@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace PlayerScripts {
+namespace Player {
     public enum CameraPerspective {
         FirstPerson,
         ThirdPerson
     }
 
-    public class PlayerCamera : MonoBehaviour {
+    public class Cam : MonoBehaviour {
 
         [Header("Input Settings")]
         public string MouseXInput;
@@ -45,7 +45,7 @@ namespace PlayerScripts {
             Cursor.lockState = CursorLockMode.Locked;
             xClamp = 0;
             headOffset = Vector3.zero;
-            FPSController = GetComponentInParent<PlayerMovement>().transform;
+            FPSController = GetComponentInParent<Move>().transform;
             head = GetComponent<SphereCollider>();
         }
 

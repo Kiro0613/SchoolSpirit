@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace PlayerScripts {
-    public class PlayerMovement : MonoBehaviour {
-        public PlayerStates playerStates;
+namespace Player {
+    public class Move : MonoBehaviour {
+        public State playerStates;
 
         public bool canMove;
 
@@ -94,7 +94,7 @@ namespace PlayerScripts {
                 }
 
                 if(hInput == 0 && vInput == 0) {
-                    playerStates = PlayerStates.Idle;
+                    playerStates = State.Idle;
                     stepCycle = 0;
                     stepCycleSize = 0;
                     nextStepIncrement = 60;
@@ -102,17 +102,17 @@ namespace PlayerScripts {
                     incrementStepCycle = false;
                 } else {
                     if(_speed == walkSpeed) {
-                        playerStates = PlayerStates.Walking;
+                        playerStates = State.Walking;
                         stepCycleSize = 2;
                         incrementStepCycle = true;
                     } else {
-                        playerStates = PlayerStates.Running;
+                        playerStates = State.Running;
                         stepCycleSize = 4;
                         incrementStepCycle = true;
                     }
                 }
             } else {
-                playerStates = PlayerStates.Jumping;
+                playerStates = State.Jumping;
                 stepCycle = 0;
                 stepCycleSize = 0;
                 nextStepIncrement = 60;

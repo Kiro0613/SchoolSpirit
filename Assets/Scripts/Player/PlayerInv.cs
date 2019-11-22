@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace PlayerScripts {
-    public class PlayerInv : MonoBehaviour {
+namespace Player {
+    public class Inv : MonoBehaviour {
         public List<GameObject> inv;
         public bool invOpen;
         public GameObject invViewer;
@@ -13,14 +13,14 @@ namespace PlayerScripts {
         public float slideSpeed;
         public bool holdingItem;
         int heldItem;
-        PlayerCamera playerCamera;
+        Cam playerCamera;
         Vector3 invDropSpot;
         Vector3 target;
 
 
         // Start is called before the first frame update
         void Start() {
-            playerCamera = GetComponent<PlayerCamera>();
+            playerCamera = GetComponent<Cam>();
             invOpen = false;
             target = Vector3.zero;
             holdingItem = false;
